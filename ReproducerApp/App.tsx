@@ -1,37 +1,23 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import { useState } from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 function App() {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  return (
-    <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
-    </SafeAreaProvider>
-  );
-}
-
-function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
+  const [dashed, setDashed] = useState(true);
 
   return (
     <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
-      />
+      <Text style={styles.label}>
+        {dashed ? "borderStyle: 'dashed'" : 'borderStyle removed'}
+      </Text>
+      <View testID="bordered" style={[styles.box, dashed && styles.dashed]} />
+      <Text style={styles.label}>Never dashed</Text>
+      <View testID="never-dashed" style={styles.box} />
+      <Pressable
+        testID="remove-border-style"
+        style={styles.button}
+        onPress={() => setDashed(false)}>
+        <Text style={styles.buttonText}>Remove borderStyle</Text>
+      </Pressable>
     </View>
   );
 }
@@ -39,6 +25,29 @@ function AppContent() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 48,
+    gap: 24,
+    backgroundColor: '#ffffff',
+  },
+  label: {
+    color: '#000000',
+  },
+  box: {
+    width: 240,
+    height: 120,
+    borderWidth: 8,
+    borderColor: '#d00000',
+  },
+  dashed: {
+    borderStyle: 'dashed',
+  },
+  button: {
+    alignSelf: 'flex-start',
+    padding: 16,
+    backgroundColor: '#202020',
+  },
+  buttonText: {
+    color: '#ffffff',
   },
 });
 
